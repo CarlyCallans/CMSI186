@@ -8,8 +8,8 @@ public static void main(String[] args) {
 	int month1 = Integer.parseInt(args[4]);
 	int day1 = Integer.parseInt(args[5]);
 
-	if(!(isValidDate(year0, month0, day0))){
-		System.out.println("Not a valid date");	
+	if((!(isValidDate(year0, month0, day0))) || (!(isValidDate(year1, month1, day1)))) {
+		System.out.println("Not a valid date");
 	}
 	System.out.println(daysBetween(year0, month0, day0, year1,  month1, day1));
 
@@ -56,6 +56,9 @@ public static void main(String[] args) {
 		}
 		}
 	public static int daysBetween(int year0, int month0, int day0, int year1, int month1, int day1){
+		if ((!(isValidDate(year0, month0, day0))) || (!(isValidDate(year1, month1, day1)))){
+			System.exit(0);
+		}
 		int difference0 =0;
 		int difference1 =0;
 		int i;
@@ -67,6 +70,7 @@ public static void main(String[] args) {
 				difference0 = difference0 + 365;
 			}
 		}
+
 		for (i=1; i<month0; i++){
 			difference0 = difference0 + daysInMonth(i, year0);
 		}
@@ -79,7 +83,9 @@ public static void main(String[] args) {
 			}else{
 				difference1 = difference1 + 365;
 			}
-	}	
+		}
+
+
 		for (i=1; i<month0; i++){
 			difference1 = difference1 + daysInMonth(i, year1);
 		}
