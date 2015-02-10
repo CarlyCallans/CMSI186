@@ -11,7 +11,7 @@ public static void main(String[] args) {
 		int day1 = Integer.parseInt(args[5]);
 
 	if((!(isValidDate(year0, month0, day0))) || (!(isValidDate(year1, month1, day1)))) {
-		System.out.println("Not a valid date");
+		System.out.println("One or more of the supplied dates is not valid.");
 	}
 	    System.out.println(daysBetween(year0, month0, day0, year1,  month1, day1));
 
@@ -19,11 +19,7 @@ public static void main(String[] args) {
         
         System.out.println("Usage: java DateCounter <year0> <month0> <day0> <year1> <month1> <day1>");
 
-	} catch (NumberFormatException e2) {
-
-		System.out.println("One or more of the supplied dates is not valid");
-	}
-
+}
 }
 	public static boolean isLeapYear(int year){
 		if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)){
