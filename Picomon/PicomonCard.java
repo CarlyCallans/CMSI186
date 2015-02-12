@@ -9,6 +9,7 @@ public class PicomonCard {
     
     public PicomonCard() {
         this(getRandomElement(), getRandomPower());
+
     }
 
     public PicomonCard(PicomonElement element, int power) {
@@ -38,8 +39,66 @@ public class PicomonCard {
     }
 
     public boolean beats(PicomonCard opponent) {
+
+
         // Implement me!
-        return false;
+
+        int myPower = this.getPower();
+        int theirPower = opponent.getPower();
+
+        switch (this.getElement()) {
+            case FIRE:
+                switch (opponent.getElement()) {
+                    case WIND:
+                        myPower *= 4;
+
+                        System.out.println("MULT 4x = " + myPower);
+
+                        break;
+                }
+                break;
+            case WIND:
+                switch (opponent.getElement()) {
+                    case EARTH:
+                        myPower *= 2;
+
+                        break;
+
+                    case WATER:
+                        myPower *= 3;
+
+                        break;
+                }
+            case WATER:
+                switch(opponent.getElement()) {
+                   case FIRE:
+                        myPower *= 2;
+
+                        break;
+                    case EARTH:
+                        myPower *= 2;
+
+                        break;
+
+                }
+            case EARTH:
+                switch(opponent.getElement()) {
+                    case FIRE:
+                        myPower *= 4;
+                        System.out.println("MULT 4x = " + myPower);
+
+                        break;
+                }
+
+        }
+
+
+        boolean hasWon = this.getPower() > opponent.getPower();
+
+
+
+
+        return hasWon;
     }
 
     @Override
@@ -123,6 +182,27 @@ public class PicomonCard {
 
     private static int getRandomPower() {
         return (int)((Math.random() * 99) + 1);
+    }
+
+
+
+    public static void main (String [] args) {
+
+
+        PicomonCard card1 = new PicomonCard("Windwoman", PicomonElement.EARTH, 10);
+        System.out.println(card1.getPower());
+
+        PicomonCard card2 = new PicomonCard("Waterperson", PicomonElement.FIRE, 12);
+        System.out.println(card2.getPower());
+
+        System.out.println(card1.beats(card2));
+
+        System.out.println(card2.beats(card1));
+
+
+
+
+
     }
 
 }
