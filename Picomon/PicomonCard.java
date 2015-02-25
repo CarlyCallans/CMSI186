@@ -41,8 +41,6 @@ public class PicomonCard {
     public boolean beats(PicomonCard opponent) {
 
 
-        // Implement me!
-
         int myPower = this.getPower();
         int theirPower = opponent.getPower();
 
@@ -69,6 +67,7 @@ public class PicomonCard {
 
                         break;
                 }
+                break;
             case WATER:
                 switch(opponent.getElement()) {
                    case FIRE:
@@ -81,10 +80,62 @@ public class PicomonCard {
                         break;
 
                 }
+                break;
             case EARTH:
                 switch(opponent.getElement()) {
                     case FIRE:
                         myPower *= 4;
+                        System.out.println(this.getElement());
+                        System.out.println("MULT 4x = " + myPower);
+
+                        break;
+                }
+
+            }
+
+
+
+        switch (opponent.getElement()) {
+            case FIRE:
+                switch (this.getElement()) {
+                    case WIND:
+                        theirPower *= 4;
+
+                        System.out.println("MULT 4x = " + theirPower);
+
+                        break;
+                }
+                break;
+            case WIND:
+                switch (this.getElement()) {
+                    case EARTH:
+                        theirPower *= 2;
+
+                        break;
+
+                    case WATER:
+                        theirPower *= 3;
+
+                        break;
+                }
+                break;
+            case WATER:
+                switch(this.getElement()) {
+                   case FIRE:
+                        theirPower *= 2;
+
+                        break;
+                    case EARTH:
+                        theirPower *= 2;
+
+                        break;
+
+                }
+                break;
+            case EARTH:
+                switch(this.getElement()) {
+                    case FIRE:
+                        theirPower *= 4;
                         System.out.println("MULT 4x = " + myPower);
 
                         break;
@@ -93,7 +144,8 @@ public class PicomonCard {
         }
 
 
-        boolean hasWon = this.getPower() > opponent.getPower();
+
+        boolean hasWon = myPower > theirPower;
 
 
 
