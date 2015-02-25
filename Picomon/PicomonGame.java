@@ -68,26 +68,60 @@ public class PicomonGame {
 
     public boolean isMatchOver() {
         // Implement me!
-        return true;
+        return gymLeaderDeck.getSize() == gymLeaderPosition || trainerDeck.getSize() == trainerPosition;
     }
     
     public Player getLeader() {
-        // Implement me!
-        return Player.TRAINER;
+        if (gymLeaderPosition < trainerPosition){
+            return Player.GYM_LEADER;
+        } else if (trainerPosition < gymLeaderPosition){
+            return Player.TRAINER;
+        } else {
+        return null;
+        }
     }
     
     public Round playRound() {
-        // Implement me!
-        return null;
+        Round round1 = new Round( gymLeaderDeck.cardAt(gymLeaderPosition), trainerDeck.cardAt(trainerPosition));
+        if (round1.gymLeaderCard.beats(round1.trainerCard)){
+            round1.winner = Player.GYM_LEADER;
+            trainerPosition++;
+        } else if (round1.trainerCard.beats(round1.gymLeaderCard)){
+            round1.winner = Player.TRAINER;
+            gymLeaderPosition++;
+        }else {
+            trainerPosition++;
+            gymLeaderPosition++;
+            round1.winner = null;
+        }
+        return round1;
     }
 
     public Round[] playMatch() {
         // Implement me!
-        return new Round[0];
+        Round[] potentialFullGame = new Round[gymLeaderDeck.getSize() + trainerDeck.getSize()];
+        int roundsPlayed;
+        for(roundsPlayed = 0; !isMatchOver(); roundsPlayed++){
+            potentialFullGame[roundsPlayed] = this.playRound();
+
+        }
+        Round[] fullGame = new Round[roundsPlayed + 1];
+        for(;roundsPlayed >= 0;roundsPlayed--){
+            fullGame[roundsPlayed] = potentialFullGame[roundsPlayed];
+        }
+        return fullGame;
     }
 
     public static void main(String[] args) {
         // Implement me!
+        System.out.println("My deck"+ gymLeaderDeck+ "Their deck" + trainerDeck);
+
+        System.out.println("My card" +gymLeaderCard+ "Their card"+ trainerCard);
+
+        System.out.println("The match winner is"+ round1.winner);
+
+        System.out.println("The full game winner is"+ fullGame);
+
     }
 
 }
