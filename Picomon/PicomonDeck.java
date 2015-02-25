@@ -39,12 +39,57 @@ public class PicomonDeck {
     }
 
     public void shuffle() {
-        // Implement me!
+        int i =0;
+        PicomonCard[] half1;
+        PicomonCard[] half2;
+
+        if (this.getSize() % 2 == 0){
+            half1 = new PicomonCard[this.getSize()/2];
+            half2 = new PicomonCard[this.getSize()/2];
+        
+            for(i=0;i < this.getSize()/2; i++){
+                half1[i] = this.cards[i];
+
+            }
+            for (i=this.getSize()/2; i < this.getSize(); i++){
+                half2[i - this.getSize()/2] = this.cards[i];
+            }
+
+        } else {
+            half1 = new PicomonCard[this.getSize()/2];
+            half2 = new PicomonCard[this.getSize()/2 +1];
+
+            for(i=0;i < this.getSize()/2; i++){
+                half1[i] = this.cards[i];
+
+            }
+            for (i=this.getSize()/2; i < this.getSize(); i++){
+                half2[i - this.getSize()/2] = this.cards[i];
+            }
+        }   
+
+        for (i=0; i < this.cards.length; i++){
+            if(i%2==0){
+                this.cards[i] = half2[i/2];
+            }else{
+                this.cards[i] = half1[(i-1)/2];            
+            }
+
+        }
+
     }
 
     public boolean orderedEquals(PicomonDeck other) {
-        // Implement me!
-        return true;
+        int i=0;
+        if(this.getSize() == other.getSize()){
+            for(;i < this.getSize(); i++){
+                if(!(this.cardAt(i).equals(other.cardAt(i)))){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -74,9 +119,6 @@ public class PicomonDeck {
         }
 
         PicomonDeck other = (PicomonDeck)obj;
-        // Due to the possibility of duplicates, deck comparison is a notch trickier.
-        // Our approach is to count the cards in each deck then ensure that the cards
-        // and counts are the same.
         return tally().equals(other.tally());
     }
 
@@ -93,4 +135,8 @@ public class PicomonDeck {
         
         return result;
     }
+    public static void main (String [] args) {
+        System.out.println("hi");
+    }
+
 }
