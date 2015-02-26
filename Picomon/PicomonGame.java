@@ -113,14 +113,126 @@ public class PicomonGame {
     }
 
     public static void main(String[] args) {
-        // Implement me!
-        System.out.println("My deck"+ gymLeaderDeck+ "Their deck" + trainerDeck);
+        try{
+            PicomonGame ourGame;
+            if (args.length == 0){
+                ourGame = new PicomonGame();
+                Round[] rounds = ourGame.playMatch();
+                for (int i = 0; i < rounds.length; i++){
+                    System.out.println(rounds[i]);
+                }
 
-        System.out.println("My card" +gymLeaderCard+ "Their card"+ trainerCard);
+            }else {
 
-        System.out.println("The match winner is"+ round1.winner);
 
-        System.out.println("The full game winner is"+ fullGame);
+                PicomonElement e = PicomonElement.WIND;
+
+
+                PicomonCard[] cards = new PicomonCard[args.length/2];
+
+                for(int i = 0; i < args.length; i++){
+                    //System.out.println(args[i]);
+                    if(i % 2 == 0){
+                        System.out.println(args[i]);
+
+                        String element = args[i];
+                        switch (element) {
+                            case "fire":
+                                //System.out.println("case fire = " + element);
+                                e = PicomonElement.FIRE;
+                                
+
+
+
+                                break;
+                            case "earth":
+                                //System.out.println("case earth = " + element);
+                                
+                                e = PicomonElement.EARTH;
+
+                                break;
+                            case "water":
+                                //System.out.println("case water = " + element);
+
+                                e =PicomonElement.WATER;
+
+                                break;
+                            case "wind":
+                                //System.out.println("case wind = " + element);
+
+                                e = PicomonElement.WIND;
+
+                                break;
+
+                            default:
+                                throw new Exception();
+
+                        }
+
+
+                    } else {
+                        int power = Integer.parseInt(args[i]);
+
+
+
+                        PicomonCard c = new PicomonCard(e,power);
+                        System.out.println(c);
+                    
+
+                        cards[(i-1)/2] = c;
+
+
+                    }
+
+
+
+                }
+
+
+                PicomonDeck d1 = new PicomonDeck(cards);
+                System.out.println(d1);
+
+                PicomonDeck d2 = new PicomonDeck(cards);
+                System.out.println(d2);
+                System.out.println(Math.random()*100);
+                int random = (int)(Math.random()*100);
+                System.out.println(random);
+
+
+                for(int i = 0; i < random; i++){
+                    d1.shuffle();
+
+                }
+
+
+                random = (int)(Math.random()*10);
+                System.out.println(random);
+                for(int i = 0; i < random; i++){
+                    
+                    d2.shuffle();
+                    System.out.println(d2);
+                }
+                System.out.println(d1);
+                System.out.println(d2);
+
+                PicomonGame g = new PicomonGame(d1,d2);
+                Round[] rounds = g.playMatch();
+                for (int i = 0; i < rounds.length; i++){
+                    System.out.println(rounds[i]);
+                }
+
+
+
+
+            }
+    
+
+        } catch (Exception e){
+            System.err.println("Cannot create a deck based on the supplied arguments.");
+
+
+        }
+     
 
     }
 
