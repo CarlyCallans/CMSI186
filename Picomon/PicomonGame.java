@@ -1,259 +1,238 @@
-import java.util.HashMap;
-import java.util.Map;
+public class PicomonGame {
 
-public class PicomonCard {
+    public enum Player {
+        GYM_LEADER("Gym leader"), TRAINER("Trainer");
+        
+        private String representation;
+        private Player(String representation) {
+            this.representation = representation;
+        }
 
-    private String name;
-    private PicomonElement element;
-    private int power;
-    
-    public PicomonCard() {
-        this(getRandomElement(), getRandomPower());
-
+        @Override
+        public String toString() {
+            return representation;
+        }
     }
 
-    public PicomonCard(PicomonElement element, int power) {
-        this(getRandomName(element), element, power);
+    public class Round {
+        public Player winner; // null if tied.
+        public PicomonCard gymLeaderCard;
+        public PicomonCard trainerCard;
+        
+        public Round(PicomonCard gymLeaderCard, PicomonCard trainerCard) {
+            this.gymLeaderCard = gymLeaderCard;
+            this.trainerCard = trainerCard;
+        }
+
+        @Override
+        public String toString() {
+            if (winner == null) {
+                return "It's a tie between " + Player.GYM_LEADER + "'s " + gymLeaderCard + " and " +
+                        Player.TRAINER + "'s " + trainerCard + "!";
+            } else {
+                Player loser = winner == Player.GYM_LEADER ? Player.TRAINER : Player.GYM_LEADER;
+                PicomonCard winningCard = winner == Player.GYM_LEADER ? gymLeaderCard : trainerCard;
+                PicomonCard losingCard = winner == Player.GYM_LEADER ? trainerCard : gymLeaderCard;
+                return winner + "'s " + winningCard + " beats " + loser + "'s " + losingCard + "!";
+            }
+        }
+    }
+
+    private PicomonDeck gymLeaderDeck;
+    private PicomonDeck trainerDeck;
+    private int gymLeaderPosition;
+    private int trainerPosition;
+    
+    public PicomonGame() {
+        this(new PicomonDeck(), new PicomonDeck());
     }
     
-    public PicomonCard(String name, PicomonElement element, int power) {
-        if (power < 1) {
+    public PicomonGame(PicomonDeck gymLeaderDeck, PicomonDeck trainerDeck) {
+        if (gymLeaderDeck.getSize() != trainerDeck.getSize()) {
             throw new IllegalArgumentException();
         }
 
-        this.name = name;
-        this.element = element;
-        this.power = power;
+        gymLeaderPosition = 0;
+        trainerPosition = 0;
+        this.gymLeaderDeck = gymLeaderDeck;
+        this.trainerDeck = trainerDeck;
     }
     
-    public String getName() {
-        return name;
-    }
-
-    public PicomonElement getElement() {
-        return element;
+    public PicomonDeck getGymLeaderDeck() {
+        return gymLeaderDeck;
     }
     
-    public int getPower() {
-        return power;
+    public PicomonDeck getTrainerDeck() {
+        return trainerDeck;
     }
 
-    public boolean beats(PicomonCard opponent) {
+    public boolean isMatchOver() {
+        // Implement me!
+        return gymLeaderDeck.getSize() == gymLeaderPosition || trainerDeck.getSize() == trainerPosition;
+    }
+    
+    public Player getLeader() {
+        if (gymLeaderPosition < trainerPosition){
+            return Player.GYM_LEADER;
+        } else if (trainerPosition < gymLeaderPosition){
+            return Player.TRAINER;
+        } else {
+        return null;
+        }
+    }
+    
+    public Round playRound() {
+        Round round1 = new Round( gymLeaderDeck.cardAt(gymLeaderPosition), trainerDeck.cardAt(trainerPosition));
+        if (round1.gymLeaderCard.beats(round1.trainerCard)){
+            round1.winner = Player.GYM_LEADER;
+            trainerPosition++;
+        } else if (round1.trainerCard.beats(round1.gymLeaderCard)){
+            round1.winner = Player.TRAINER;
+            gymLeaderPosition++;
+        }else {
+            trainerPosition++;
+            gymLeaderPosition++;
+            round1.winner = null;
+        }
+        return round1;
+    }
 
+    public Round[] playMatch() {
+        // Implement me!
+        Round[] potentialFullGame = new Round[gymLeaderDeck.getSize() + trainerDeck.getSize()];
+        int roundsPlayed;
+        for(roundsPlayed = 0; !isMatchOver(); roundsPlayed++){
+            potentialFullGame[roundsPlayed] = this.playRound();
 
-        int myPower = this.getPower();
-        int theirPower = opponent.getPower();
+        }
+        Round[] fullGame = new Round[roundsPlayed + 1];
+        for(;roundsPlayed >= 0;roundsPlayed--){
+            fullGame[roundsPlayed] = potentialFullGame[roundsPlayed];
+        }
+        return fullGame;
+    }
 
-        switch (this.getElement()) {
-            case FIRE:
-                switch (opponent.getElement()) {
-                    case WIND:
-                        myPower *= 4;
-
-                        System.out.println("MULT 4x = " + myPower);
-
-                        break;
+    public static void main(String[] args) {
+        try{
+            PicomonGame ourGame;
+            if (args.length == 0){
+                ourGame = new PicomonGame();
+                Round[] rounds = ourGame.playMatch();
+                for (int i = 0; i < rounds.length; i++){
+                    System.out.println(rounds[i]);
                 }
-                break;
-            case WIND:
-                switch (opponent.getElement()) {
-                    case EARTH:
-                        myPower *= 2;
 
-                        break;
+            }else {
 
-                    case WATER:
-                        myPower *= 3;
 
-                        break;
+                PicomonElement e = PicomonElement.WIND;
+
+
+                PicomonCard[] cards = new PicomonCard[args.length/2];
+
+                for(int i = 0; i < args.length; i++){
+                    //System.out.println(args[i]);
+                    if(i % 2 == 0){
+                        System.out.println(args[i]);
+
+                        String element = args[i];
+                        switch (element) {
+                            case "fire":
+                                //System.out.println("case fire = " + element);
+                                e = PicomonElement.FIRE;
+                                
+
+
+
+                                break;
+                            case "earth":
+                                //System.out.println("case earth = " + element);
+                                
+                                e = PicomonElement.EARTH;
+
+                                break;
+                            case "water":
+                                //System.out.println("case water = " + element);
+
+                                e =PicomonElement.WATER;
+
+                                break;
+                            case "wind":
+                                //System.out.println("case wind = " + element);
+
+                                e = PicomonElement.WIND;
+
+                                break;
+
+                            default:
+                                throw new Exception();
+
+                        }
+
+
+                    } else {
+                        int power = Integer.parseInt(args[i]);
+
+
+
+                        PicomonCard c = new PicomonCard(e,power);
+                        System.out.println(c);
+                    
+
+                        cards[(i-1)/2] = c;
+
+
+                    }
+
+
+
                 }
-                break;
-            case WATER:
-                switch(opponent.getElement()) {
-                   case FIRE:
-                        myPower *= 2;
 
-                        break;
-                    case EARTH:
-                        myPower *= 2;
 
-                        break;
+                PicomonDeck d1 = new PicomonDeck(cards);
+                System.out.println(d1);
+
+                PicomonDeck d2 = new PicomonDeck(cards);
+                System.out.println(d2);
+                System.out.println(Math.random()*100);
+                int random = (int)(Math.random()*100);
+                System.out.println(random);
+
+
+                for(int i = 0; i < random; i++){
+                    d1.shuffle();
 
                 }
-                break;
-            case EARTH:
-                switch(opponent.getElement()) {
-                    case FIRE:
-                        myPower *= 4;
-                        System.out.println(this.getElement());
-                        System.out.println("MULT 4x = " + myPower);
 
-                        break;
+
+                random = (int)(Math.random()*10);
+                System.out.println(random);
+                for(int i = 0; i < random; i++){
+                    
+                    d2.shuffle();
+                    System.out.println(d2);
                 }
+                System.out.println(d1);
+                System.out.println(d2);
+
+                PicomonGame g = new PicomonGame(d1,d2);
+                Round[] rounds = g.playMatch();
+                for (int i = 0; i < rounds.length; i++){
+                    System.out.println(rounds[i]);
+                }
+
+
+
 
             }
-
-
-
-        switch (opponent.getElement()) {
-            case FIRE:
-                switch (this.getElement()) {
-                    case WIND:
-                        theirPower *= 4;
-
-                        System.out.println("MULT 4x = " + theirPower);
-
-                        break;
-                }
-                break;
-            case WIND:
-                switch (this.getElement()) {
-                    case EARTH:
-                        theirPower *= 2;
-
-                        break;
-
-                    case WATER:
-                        theirPower *= 3;
-
-                        break;
-                }
-                break;
-            case WATER:
-                switch(this.getElement()) {
-                   case FIRE:
-                        theirPower *= 2;
-
-                        break;
-                    case EARTH:
-                        theirPower *= 2;
-
-                        break;
-
-                }
-                break;
-            case EARTH:
-                switch(this.getElement()) {
-                    case FIRE:
-                        theirPower *= 4;
-                        System.out.println("MULT 4x = " + myPower);
-
-                        break;
-                }
-
-        }
-
-
-
-        boolean hasWon = myPower > theirPower;
-
-
-
-
-        return hasWon;
-    }
-
-    @Override
-    public String toString() {
-        return name + " (" + element + ", " + power + ")";
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (obj == null) {
-            return false;
-        }
-
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        PicomonCard other = (PicomonCard)obj;
-        if ((element != other.element) || (power != other.power)) {
-            return false;
-        }
-
-        // name can be null, so extra handling is needed.
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    // Advanced Java---look away, look away!
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((element == null) ? 0 : element.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + power;
-        return result;
-    }
-
-    private static final Map<PicomonElement, String[]> NAMES = new HashMap<PicomonElement, String[]>();
-    static {
-        NAMES.put(PicomonElement.FIRE, new String[] {
-            "Justin", "Anthony", "Christopher", "Jake", "Allen",
-            "Anson", "Brandon", "Carly", "Geoffrey"
-        });
-        
-        NAMES.put(PicomonElement.EARTH, new String[] {
-            "Claire", "Jacqueline", "Matthew", "Jared", "Alexander",
-            "Henry", "Brian", "Alondra", "Lauren"
-        });
-        
-        NAMES.put(PicomonElement.WATER, new String[] {
-            "Mary", "Sasha", "Zach", "Victor", "Anna",
-            "Casey", "Scott", "Kevin", "David"
-        });
-        
-        NAMES.put(PicomonElement.WIND,  new String[] {
-            "Savannah", "Carleen", "Sean", "Mathew", "Josh",
-            "Jordan", "George", "Kyle"
-        });
-    }
-
-    private static String getRandomName(PicomonElement element) {
-        String[] elementNames = NAMES.get(element);
-        return elementNames[(int)Math.floor(Math.random() * elementNames.length)];
-    }
     
-    private static PicomonElement getRandomElement() {
-        return PicomonElement.values()[(int)Math.floor(Math.random() * 4)];
-    }
 
-    private static int getRandomPower() {
-        return (int)((Math.random() * 99) + 1);
-    }
+        } catch (Exception e){
+            System.err.println("Cannot create a deck based on the supplied arguments.");
 
 
-
-    public static void main (String [] args) {
-
-
-        PicomonCard card1 = new PicomonCard("Windwoman", PicomonElement.EARTH, 10);
-        System.out.println(card1.getPower());
-
-        PicomonCard card2 = new PicomonCard("Waterperson", PicomonElement.FIRE, 12);
-        System.out.println(card2.getPower());
-
-        System.out.println(card1.beats(card2));
-
-        System.out.println(card2.beats(card1));
-
-
-
-
+        }
+     
 
     }
 
