@@ -119,6 +119,9 @@ public class PicomonDeck {
         }
 
         PicomonDeck other = (PicomonDeck)obj;
+        // Due to the possibility of duplicates, deck comparison is a notch trickier.
+        // Our approach is to count the cards in each deck then ensure that the cards
+        // and counts are the same.
         return tally().equals(other.tally());
     }
 
