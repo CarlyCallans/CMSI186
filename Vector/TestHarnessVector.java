@@ -84,4 +84,41 @@ public class TestHarnessVector {
             displaySuccessIfTrue(false);
         }
     }
+    private static void test_add() {
+        System.out.println("Testing vector constructors");
+        Vector testVector1 = new Vector(0,0);
+        Vector testVector2 = new Vector(1,3);
+        Vector testVector3 = new Vector(-3,-2);
+
+        try{
+            displaySuccessIfTrue(testVector1.add(testVector2).x() == 1);
+        } catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+        try{
+            displaySuccessIfTrue(testVector1.add(testVector2).y() == 3);
+        } catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+        try{
+            displaySuccessIfTrue(testVector1.add(testVector3).x() == -3);
+        } catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+        try{
+            displaySuccessIfTrue(testVector1.add(testVector1).y() == -2);
+        } catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+        try{
+            displaySuccessIfTrue(testVector2.add(testVector3).x() == -2);
+        } catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+        try{
+            displaySuccessIfTrue(testVector2.add(testVector3).y() == -2);
+        } catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+    }
 }
