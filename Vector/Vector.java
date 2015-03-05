@@ -1,6 +1,7 @@
 public class Vector {
 
-    // Declare my instance variables!
+    public static double x;
+    public static double y;
     
     public Vector(double x, double y) {
         this.x = x;
@@ -16,11 +17,13 @@ public class Vector {
     }
 
     public Vector add(Vector v) {
-        // Implement me!
+        double newX = this.x() + v.x();
+        double newY = this.y() + v.y();
+        return new Vector(newX, newY);
     }
 
     public Vector scale(double magnitude) {
-        // Implement me!
+        return new Vector(this.x() * magnitude, this.y * magnitude);
     }
 
 }
