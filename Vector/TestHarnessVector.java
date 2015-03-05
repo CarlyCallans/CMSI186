@@ -8,9 +8,8 @@ public class TestHarnessVector {
         successes = 0;
 
         test_vectorTest();
-        //test_();
-        //test_();
-        //test_();
+        test_add();
+        test_magnitude();
         //test_();
         //test_();
         //test_();
@@ -117,6 +116,27 @@ public class TestHarnessVector {
         }
         try{
             displaySuccessIfTrue(testVector2.add(testVector3).y() == -2);
+        } catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+    }
+    private static void test_magnitude() {
+        Vector testVector1 = new Vector(0,0);
+        Vector testVector2 = new Vector(1,3);
+        Vector testVector3 = new Vector(-3,-2);
+        
+        try{
+            displaySuccessIfTrue(testVector1.scale(2).x() == 0 && testVector1.scale(2).y == 0);
+        }catch (Exception e) {
+            displaySuccessIfTrue(false);
+        }
+        try{
+            displaySuccessIfTrue(testVector2.scale(0.5).x() == 0.5 && testVector2.scale(0.5).y == 1.5);
+        }catch (Exception e ){
+            displaySuccessIfTrue(false);
+        }
+        try{
+            displaySuccessIfTrue(testVector3.scale(10).x() == -30 && testVector3.scale(10).x == -20);        
         } catch (Exception e){
             displaySuccessIfTrue(false);
         }
