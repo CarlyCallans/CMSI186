@@ -1,23 +1,33 @@
 public class Ball {
 
-    // Declare my instance variables!
+    public static Vector location;
+    public static Vector initialVelocity;
+    public static double radius;
     
     public Ball(Vector location, Vector initialVelocity) {
-        // Implement me!
-        // Corrected (03/02/2015): required constructor will not take in radius, as all balls 
-        // should have a fixed 2.25 in diameter.
+        this.location = location;
+        this.initialVelocity = initialVelocity;
     }
 
     public Vector getLocation() {
-        // Implement me!
+        return location;
     }
 
     public double getRadius() {
-        // Implement me!
+        return radius = 2.25;
     }
     
     public void applyFriction(double grain) {
-        // Implement me!
+       initialVelocity = initialVelocity(Math.pow(.99, grain));
+            if (Math.sqrt(Math.pow(initialVelocity.x(),2) + Math.pow(initialVelocity.y()^2,2) <= 1)){
+                initialVelocity.x() = initialVelocity.x() * 0.99;
+                initialVelocity.y() = initialVelocity.y() * 0.99;
+        } else{
+            return;
+
+        }
+        //To simulate friction, a balls's velocity 
+        //decreases by 1% each second until its velocity has decreased to less than 1 inch per second.
     }
 
     public void move(double grain) {
