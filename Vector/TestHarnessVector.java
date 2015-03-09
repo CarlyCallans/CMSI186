@@ -10,8 +10,8 @@ public class TestHarnessVector {
         test_vectorTest();
         test_add();
         test_magnitude();
-        //test_();
-        //test_();
+        test_ball();
+        test_getLocation();
         //test_();
         //test_();
 
@@ -28,7 +28,7 @@ public class TestHarnessVector {
         Vector testVector1 = new Vector(0,0);
         Vector testVector2 = new Vector(1,3);
         Vector testVector3 = new Vector(3,2);
-
+        System.out.println("Testing null");
         try{
             displaySuccessIfTrue(null != testVector1);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class TestHarnessVector {
             displaySuccessIfTrue(false);
         }
 
-
+        System.out.println("Testing values of vector");
         try{
             displaySuccessIfTrue(0 == testVector1.x());
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class TestHarnessVector {
             displaySuccessIfTrue(false);
         }
         try{
-            displaySuccessIfTrue(testVector1.add(testVector1).y() == -2);
+            displaySuccessIfTrue(testVector1.add(testVector3).y() == -2);
         } catch (Exception e){
             displaySuccessIfTrue(false);
         }
@@ -115,7 +115,7 @@ public class TestHarnessVector {
             displaySuccessIfTrue(false);
         }
         try{
-            displaySuccessIfTrue(testVector2.add(testVector3).y() == -2);
+            displaySuccessIfTrue(testVector2.add(testVector3).y() == 1);
         } catch (Exception e){
             displaySuccessIfTrue(false);
         }
@@ -141,4 +141,53 @@ public class TestHarnessVector {
             displaySuccessIfTrue(false);
         }
     }
+    private static void test_ball() {
+        System.out.println("Testing Ball constructors");
+        Vector locationVector = new Vector(0,0);
+        Vector initialVecocityVector = new Vector(1,3);
+
+        System.out.println("Checking for null");
+       try{
+            displaySuccessIfTrue(null != locationVector);
+        }
+        catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+
+        try{
+            displaySuccessIfTrue(null != initialVecocityVector);
+        }
+        catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+    }
+
+    public static void test_getLocation(){
+        System.out.println("Test getLocation");
+        Vector testVector1 = new Vector(0,0);
+        Vector testVector2 = new Vector(1,3);
+        Vector testVector3 = new Vector(-3,-2);
+        
+        Ball testBall1 = new Ball(new Vector(0,0), new Vector(0,0));
+        try{
+            displaySuccessIfTrue(testBall1.getLocation().x() == 0 && testBall1.getLocation().y() == 0);
+        } 
+        catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+        Ball testBall2 = new Ball(testVector2, testVector3);
+        try{
+            displaySuccessIfTrue(testBall2.getLocation().x() == 1 && testBall2.getLocation().y() == 3);
+        }
+        catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+        Ball testBall3 = new Ball (testVector3, testVector1);
+        try{
+            displaySuccessIfTrue(testBall3.getLocation().x() == -3 && testBall3.getLocation().y() == -2);
+        } catch (Exception e){
+            displaySuccessIfTrue(false);
+        }
+    }
+
 }
