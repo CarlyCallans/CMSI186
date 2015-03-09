@@ -18,19 +18,21 @@ public class Ball {
     }
     
     public void applyFriction(double grain) {
-       initialVelocity = initialVelocity(Math.pow(.99, grain));
-            if (Math.sqrt(Math.pow(initialVelocity.x(),2) + Math.pow(initialVelocity.y()^2,2) <= 1)){
-                initialVelocity.x() = initialVelocity.x() * 0.99;
-                initialVelocity.y() = initialVelocity.y() * 0.99;
+       initialVelocity = initialVelocity.scale(Math.pow(.99, grain));
+            if (Math.sqrt(Math.pow(initialVelocity.x(),2) + Math.pow(initialVelocity.y(),2)) <= 1){
+                initialVelocity = new Vector (0,0);
         } else{
-            return;
-
+    
         }
         //To simulate friction, a balls's velocity 
         //decreases by 1% each second until its velocity has decreased to less than 1 inch per second.
     }
 
     public void move(double grain) {
+
+        this.location = this.location.add(initialVelocity.scale(grain));
+
+
         // Implement me!
     }
 
